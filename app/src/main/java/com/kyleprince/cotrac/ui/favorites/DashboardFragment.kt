@@ -1,4 +1,4 @@
-package com.kyleprince.cotrac.ui.dashboard
+package com.kyleprince.cotrac.ui.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater

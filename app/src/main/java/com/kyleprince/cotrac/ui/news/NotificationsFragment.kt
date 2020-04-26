@@ -1,4 +1,4 @@
-package com.kyleprince.cotrac.ui.notifications
+package com.kyleprince.cotrac.ui.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
