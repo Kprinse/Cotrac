@@ -13,7 +13,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.kyleprince.cotrac.R
+import com.kyleprince.cotrac.MySingleton
 
 class HomeFragment : Fragment() {
 
@@ -41,6 +45,23 @@ class HomeFragment : Fragment() {
             homeViewModel.updateCountryList()
             adapter.notifyDataSetChanged()
         }
+
+        val url = "https://covid-api.com/api/regions"
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            Response.Listener { response ->
+                //textView.text = "Response: %s".format(response.toString())
+                homeViewModel.countryList.add(response.toString())
+                val countryArray = response.getJSONArray("data")
+            },
+            Response.ErrorListener { error ->
+                // TODO: Handle error
+            }
+        )
+
+        // Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(root.context).addToRequestQueue(jsonObjectRequest)
 
         return root
     }

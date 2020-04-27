@@ -1,11 +1,17 @@
 package com.kyleprince.cotrac.ui.search
 
-import android.widget.ListView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.kyleprince.cotrac.MySingleton
 
 class HomeViewModel : ViewModel() {
+
+
+    // Access the RequestQueue through your singleton class.
 
     val countryList = mutableListOf<String>("USA", "Mexico", "Austria", "China")
 
