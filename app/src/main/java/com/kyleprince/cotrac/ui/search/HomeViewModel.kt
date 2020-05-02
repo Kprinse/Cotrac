@@ -12,8 +12,7 @@ class HomeViewModel : ViewModel() {
 
 
     // Access the RequestQueue through your singleton class.
-
-    val countryList = mutableListOf<String>("USA", "Mexico", "Austria", "China")
+    val countryList = mutableListOf<String>("USA", "Russia")
 
     fun updateCountryList() {
         countryList.clear()

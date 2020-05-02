@@ -1,7 +1,5 @@
 package com.kyleprince.cotrac.ui.search
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.android.volley.Request
 import com.android.volley.Response
@@ -30,11 +26,7 @@ class HomeFragment : Fragment() {
     ): View? {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_home)
-//        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
+        val root = inflater.inflate(R.layout.fragment_search, container, false)
         val countryListView: ListView = root.findViewById(R.id.countryListView)
         val adapter = ArrayAdapter<String>(root.context, android.R.layout.simple_list_item_1, homeViewModel.countryList)
         val searchButton: Button = root.findViewById(R.id.searchButton)
@@ -52,8 +44,12 @@ class HomeFragment : Fragment() {
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 //textView.text = "Response: %s".format(response.toString())
-                homeViewModel.countryList.add(response.toString())
+                //homeViewModel.countryList.add(response.toString())
                 val countryArray = response.getJSONArray("data")
+                for (i in 0 until countryArray.length()) {
+                    val country = countryArray.getJSONObject(i).get("name")
+                    homeViewModel.countryList.add(country.toString())
+                }
             },
             Response.ErrorListener { error ->
                 // TODO: Handle error
