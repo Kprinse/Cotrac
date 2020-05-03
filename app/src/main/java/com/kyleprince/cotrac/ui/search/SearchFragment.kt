@@ -15,40 +15,44 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.kyleprince.cotrac.R
 import com.kyleprince.cotrac.MySingleton
 
-class HomeFragment : Fragment() {
+class SearchFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    // Separates app logic from UI
+    private lateinit var searchViewModel: SearchViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        // App logic from the specified class
+        searchViewModel =
+                ViewModelProviders.of(this).get(SearchViewModel::class.java)
+        // Root view for the fragment
         val root = inflater.inflate(R.layout.fragment_search, container, false)
+        // Assigning corresponding UI elements
         val countryListView: ListView = root.findViewById(R.id.countryListView)
-        val adapter = ArrayAdapter<String>(root.context, android.R.layout.simple_list_item_1, homeViewModel.countryList)
+        val adapter = ArrayAdapter<String>(root.context, android.R.layout.simple_list_item_1, searchViewModel.countryList)
         val searchButton: Button = root.findViewById(R.id.searchButton)
 
         countryListView.adapter = adapter
 
         searchButton.setOnClickListener {
-            homeViewModel.updateCountryList()
+            searchViewModel.updateCountryList()
             adapter.notifyDataSetChanged()
         }
 
+        // API fetches all countries
         val url = "https://covid-api.com/api/regions"
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
-                //textView.text = "Response: %s".format(response.toString())
-                //homeViewModel.countryList.add(response.toString())
+                // Gets all country names and adds them to the ListView
                 val countryArray = response.getJSONArray("data")
                 for (i in 0 until countryArray.length()) {
                     val country = countryArray.getJSONObject(i).get("name")
-                    homeViewModel.countryList.add(country.toString())
+                    searchViewModel.countryList.add(country.toString())
                 }
             },
             Response.ErrorListener { error ->

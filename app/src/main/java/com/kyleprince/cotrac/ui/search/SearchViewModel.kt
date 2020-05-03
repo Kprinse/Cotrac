@@ -8,7 +8,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.kyleprince.cotrac.MySingleton
 
-class HomeViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
 
 
     // Access the RequestQueue through your singleton class.

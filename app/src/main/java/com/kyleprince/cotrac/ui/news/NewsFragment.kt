@@ -19,6 +19,7 @@ import com.google.gson.Gson
 
 class NewsFragment : Fragment() {
 
+    // Separates app logic from UI
     private lateinit var newsViewModel: NewsViewModel
 
     override fun onCreateView(
@@ -30,6 +31,7 @@ class NewsFragment : Fragment() {
                 ViewModelProviders.of(this).get(NewsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_news, container, false)
 
+        // Assigns corresponding UI elements
         val newsButton: Button = root.findViewById(R.id.newsButton)
         val newsListView: ListView = root.findViewById(R.id.newsListView)
         val adapter = ArrayAdapter<String>(root.context, android.R.layout.simple_list_item_1, newsViewModel.newsList)
@@ -37,11 +39,13 @@ class NewsFragment : Fragment() {
 
         newsListView.adapter = adapter
 
+        //News API
         val url = "https://newsapi.org/v2/everything?q=COVID&from=2020-04-20&sortBy=publishedAt&apiKey=33ee60e95d08450a819708d931b6ba38&pageSize=50&page=1"
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
+                // Take the response as a string for processing later
                 result = response.toString()
             },
             Response.ErrorListener { error ->
@@ -49,11 +53,14 @@ class NewsFragment : Fragment() {
             }
         )
 
-        // Access the RequestQueue through your singleton class.
+        // Access the RequestQueue through the singleton class.
         MySingleton.getInstance(root.context).addToRequestQueue(jsonObjectRequest)
 
         newsButton.setOnClickListener {
+            // Take previous response and convert to object via gson
             val news = Gson().fromJson(result.toString(), News::class.java)
+
+            // Clear list and add article titles to it
             newsViewModel.newsList.clear()
             for (article in news.articles) newsViewModel.newsList.add(article.title)
             adapter.notifyDataSetChanged()
